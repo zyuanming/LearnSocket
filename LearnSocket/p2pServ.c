@@ -1,9 +1,9 @@
 //
-//  main.c
-//  test_network
+//  p2pServ.c
+//  LearnSocket
 //
-//  Created by Zhang Yuanming on 2/24/17.
-//  Copyright © 2017 None. All rights reserved.
+//  Created by Zhang Yuanming on 3/4/18.
+//  Copyright © 2018 HansonStudio. All rights reserved.
 //
 
 #include <stdio.h>
@@ -15,95 +15,20 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 
 #define ERR_EXIT(m) \
-    do \
-    { \
-        perror(m); \
-        exit(EXIT_FAILURE); \
-    } while(0)
+do \
+{ \
+perror(m); \
+exit(EXIT_FAILURE); \
+} while(0)
 
 
-
-struct packet
+void handler(int sig)
 {
-    int len;
-    char buf[1024];
-};
-
-ssize_t writen(int fd, const void *buf, size_t count)
-{
-    size_t nleft = count;
-    ssize_t nwriten;
-    char *bufp = (char *)buf;
-
-    while (nleft > 0) {
-        if ((nwriten = write(fd, bufp, nleft)) < 0) {
-            if (errno == EINTR) {
-                continue;
-            } else if (nwriten == 0) {
-                continue;
-            }
-        }
-        bufp += nwriten;
-        nleft -= nwriten;
-    }
-
-    return count;
-}
-
-
-ssize_t readn(int fd, const void *buf, size_t count)
-{
-    size_t nleft = count;
-    ssize_t nreadn;
-    char *bufp = (char *)buf;
-
-    while (nleft > 0) {
-        if ((nreadn = read(fd, bufp, nleft)) < 0) {
-            if (errno == EINTR) {
-                continue;
-            } else if (nreadn == 0) {
-                continue;
-            } else {
-                return -1;
-            }
-        }
-
-        bufp += nreadn;
-        nleft -= nreadn;
-    }
-
-    return count;
-}
-
-
-
-
-void do_service(int conn) {
-//    char recvbuf[1024];
-    struct packet recvbuf;
-    int n;
-    while (1) {
-        memset(&recvbuf, 0, sizeof(recvbuf));
-        int ret = readn(conn, &recvbuf.len, 4);
-        if (ret == -1) {
-            ERR_EXIT("read");
-        } else if (ret < 4) {
-            printf("client close\n");
-            break;
-        }
-        n = ntohl(recvbuf.len);
-        ret = readn(conn, recvbuf.buf, n);
-        if (ret == -1) {
-            ERR_EXIT("read");
-        } else if (ret < n) {
-            printf("client close\n");
-            break;
-        }
-        fputs(recvbuf.buf, stdout);
-        write(conn, &recvbuf, 4+n);
-    }
+    printf("recv a signal = %d\n", sig);
+    exit(EXIT_SUCCESS);
 }
 
 // gcc -Wall -g main.c -o main
@@ -155,7 +80,7 @@ int main(int argc, const char * argv[]) {
     socklen_t peerlen = sizeof(peeraddr);
     int conn;
 
-    pid_t pid;
+
     while (1) {
         if ((conn = accept(listenfd, (struct sockaddr *)&peeraddr, &peerlen)) < 0) {
             ERR_EXIT("accept");
@@ -163,17 +88,44 @@ int main(int argc, const char * argv[]) {
 
         printf("ip=%s port=%d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
 
+        pid_t pid;
         pid = fork();
         if (pid == -1) {
             ERR_EXIT("fork");
         } else if (pid == 0) {
-            close(listenfd);
-            do_service(conn);
+            signal(SIGUSR1, handler);
+            char sendbuf[1024] = {0};
+            while (fgets(sendbuf, sizeof(sendbuf), stdin) != NULL) {
+                write(conn, sendbuf, strlen(sendbuf));
+                memset(sendbuf, 0, sizeof(sendbuf));
+            }
+            printf("child close\n");
             exit(EXIT_SUCCESS);
         } else {
-            close(conn);
+            char recvbuf[1024];
+            while (1) {
+                memset(recvbuf, 0, sizeof(recvbuf));
+                size_t ret = read(conn, recvbuf, sizeof(recvbuf));
+                if (ret == -1) {
+                    ERR_EXIT("read");
+                } else if (ret == 0) {
+                    printf("peer close\n");
+                    break;
+                }
+                fputs(recvbuf, stdout);
+            }
+            printf("parent close\n");
+            kill(pid, SIGUSR1);
+            exit(EXIT_SUCCESS);
         }
     }
 
     return 0;
 }
+
+
+
+
+
+
+

@@ -27,6 +27,8 @@
 		607E213720445F47008F5E3A /* LearnSocket */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LearnSocket; sourceTree = BUILT_PRODUCTS_DIR; };
 		607E213A20445F47008F5E3A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		607E214120445F9A008F5E3A /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
+		60AD5574204BDEA100819092 /* p2pServ.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pServ.c; sourceTree = "<group>"; };
+		60AD5576204BE0B000819092 /* p2pClient.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pClient.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,8 @@
 			children = (
 				607E214120445F9A008F5E3A /* client.c */,
 				607E213A20445F47008F5E3A /* main.c */,
+				60AD5574204BDEA100819092 /* p2pServ.c */,
+				60AD5576204BE0B000819092 /* p2pClient.c */,
 			);
 			path = LearnSocket;
 			sourceTree = "<group>";
