@@ -1,9 +1,9 @@
 //
-//  main.c
-//  test_network
+//  server10.c
+//  LearnSocket
 //
-//  Created by Zhang Yuanming on 2/24/17.
-//  Copyright © 2017 None. All rights reserved.
+//  Created by Zhang Yuanming on 3/8/18.
+//  Copyright © 2018 HansonStudio. All rights reserved.
 //
 
 #include <stdio.h>
@@ -18,92 +18,84 @@
 #include <netdb.h>
 
 #define ERR_EXIT(m) \
-    do \
-    { \
-        perror(m); \
-        exit(EXIT_FAILURE); \
-    } while(0)
+do \
+{ \
+perror(m); \
+exit(EXIT_FAILURE); \
+} while(0)
 
 
 
-struct packet
+
+ssize_t recv_peak(int sockfd, void *buf, size_t len)
 {
-    int len;
-    char buf[1024];
-};
-
-//ssize_t writen(int fd, const void *buf, size_t count)
-//{
-//    size_t nleft = count;
-//    ssize_t nwriten;
-//    char *bufp = (char *)buf;
-//
-//    while (nleft > 0) {
-//        if ((nwriten = write(fd, bufp, nleft)) < 0) {
-//            if (errno == EINTR) {
-//                continue;
-//            } else if (nwriten == 0) {
-//                continue;
-//            }
-//        }
-//        bufp += nwriten;
-//        nleft -= nwriten;
-//    }
-//
-//    return count;
-//}
-//
-//
-ssize_t readn(int fd, const void *buf, size_t count)
-{
-    size_t nleft = count;
-    ssize_t nreadn;
-    char *bufp = (char *)buf;
-
-    while (nleft > 0) {
-        if ((nreadn = read(fd, bufp, nleft)) < 0) {
-            if (errno == EINTR) {
-                continue;
-            } else if (nreadn == 0) {
-                continue;
-            } else {
-                return -1;
-            }
+    while (1) {
+        int ret = recv(sockfd, buf, len, MSG_PEEK);
+        if (ret == -1 && errno == EINTR) {
+            continue;
         }
-
-        bufp += nreadn;
-        nleft -= nreadn;
+        return ret;
     }
-
-    return count;
 }
 
 
 
+// 读取一行数据为一条信息,解决粘包问题的一个方法
+ssize_t readline(int sockfd, void *buf, size_t maxline)
+{
+    int ret;
+    int nread;
+    char *bufp = buf;
+    int nleft = maxline;
+    while (1) {
+        ret = recv_peek(sockfd, bufp, nleft);
+        if (ret < 0) {
+            return ret;
+        } else if (ret == 0) {
+            return ret;
+        }
+
+        nread = ret;
+        int i;
+        for (i = 0; i < nread; i++) {
+            if (bufp[i] == '\n') {
+                ret = readn(sockfd, bufp, i+1);
+                if (ret != i+1) {
+                    exit(EXIT_FAILURE);
+                }
+                return ret;
+            }
+        }
+
+        if (nread > nleft) {
+            exit(EXIT_FAILURE);
+        }
+
+        nleft -= nread;
+        ret = readn(sockfd, bufp, nread);
+        if (ret != nread) {
+            exit(EXIT_FAILURE);
+        }
+        bufp += nread;
+    }
+
+    return -1;
+}
 
 void do_service(int conn) {
-//    char recvbuf[1024];
-    struct packet recvbuf;
+    char recvbuf[1024];
     int n;
     while (1) {
         memset(&recvbuf, 0, sizeof(recvbuf));
-        int ret = readn(conn, &recvbuf.len, 4);
+        int ret = readline(conn, recvbuf, 1024);
         if (ret == -1) {
-            ERR_EXIT("read");
-        } else if (ret < 4) {
+            ERR_EXIT("readline");
+        } else if (ret == 0) {
             printf("client close\n");
             break;
         }
-        n = ntohl(recvbuf.len);
-        ret = readn(conn, recvbuf.buf, n);
-        if (ret == -1) {
-            ERR_EXIT("read");
-        } else if (ret < n) {
-            printf("client close\n");
-            break;
-        }
-        fputs(recvbuf.buf, stdout);
-        write(conn, &recvbuf, 4+n);
+        fputs(recvbuf, stdout);
+        write(conn, recvbuf, strlen(recvbuf));
     }
 }
 
@@ -183,34 +175,6 @@ int main(int argc, const char * argv[]) {
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

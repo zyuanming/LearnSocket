@@ -54,7 +54,9 @@ ssize_t writen(int fd, const void *buf, size_t count)
     return count;
 }
 
-// 为了解决粘包问题
+// 为了解决粘包问题,这个函数确保我们要写的数据一次性都写到缓冲区中
+// 之前的回射服务器和客户端读写时都是直接用write 和 read,
+// 隐藏着粘包问题,因为TCP是流,没有边界
 ssize_t readn(int fd, const void *buf, size_t count)
 {
     size_t nleft = count;

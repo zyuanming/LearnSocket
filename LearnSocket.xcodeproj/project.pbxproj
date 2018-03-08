@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		607E213B20445F47008F5E3A /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 607E213A20445F47008F5E3A /* main.c */; };
-		607E214220445F9A008F5E3A /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 607E214120445F9A008F5E3A /* client.c */; };
+		60B8C7C72051871F00481484 /* getip.c in Sources */ = {isa = PBXBuildFile; fileRef = 60B8C7C62051871F00481484 /* getip.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +28,9 @@
 		607E214120445F9A008F5E3A /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
 		60AD5574204BDEA100819092 /* p2pServ.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pServ.c; sourceTree = "<group>"; };
 		60AD5576204BE0B000819092 /* p2pClient.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pClient.c; sourceTree = "<group>"; };
+		60B8C7C2205181BA00481484 /* server10.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = server10.c; sourceTree = "<group>"; };
+		60B8C7C4205181C900481484 /* client10.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = client10.c; sourceTree = "<group>"; };
+		60B8C7C62051871F00481484 /* getip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = getip.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,12 +63,23 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				60B8C7C12051819300481484 /* 10_readline */,
 				607E214120445F9A008F5E3A /* client.c */,
 				607E213A20445F47008F5E3A /* main.c */,
 				60AD5574204BDEA100819092 /* p2pServ.c */,
 				60AD5576204BE0B000819092 /* p2pClient.c */,
 			);
 			path = LearnSocket;
+			sourceTree = "<group>";
+		};
+		60B8C7C12051819300481484 /* 10_readline */ = {
+			isa = PBXGroup;
+			children = (
+				60B8C7C2205181BA00481484 /* server10.c */,
+				60B8C7C4205181C900481484 /* client10.c */,
+				60B8C7C62051871F00481484 /* getip.c */,
+			);
+			path = 10_readline;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,8 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607E214220445F9A008F5E3A /* client.c in Sources */,
-				607E213B20445F47008F5E3A /* main.c in Sources */,
+				60B8C7C72051871F00481484 /* getip.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
