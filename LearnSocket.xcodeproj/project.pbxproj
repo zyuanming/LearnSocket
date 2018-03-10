@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		60B8C7C72051871F00481484 /* getip.c in Sources */ = {isa = PBXBuildFile; fileRef = 60B8C7C62051871F00481484 /* getip.c */; };
+		607202612052F34300F6861F /* server11.c in Sources */ = {isa = PBXBuildFile; fileRef = 60B8C7C920519CA500481484 /* server11.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +31,8 @@
 		60B8C7C2205181BA00481484 /* server10.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = server10.c; sourceTree = "<group>"; };
 		60B8C7C4205181C900481484 /* client10.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = client10.c; sourceTree = "<group>"; };
 		60B8C7C62051871F00481484 /* getip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = getip.c; sourceTree = "<group>"; };
+		60B8C7C920519CA500481484 /* server11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server11.c; sourceTree = "<group>"; };
+		60B8C7CA20519CA500481484 /* client11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client11.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				60B8C7C820519C6A00481484 /* 11_signal */,
 				60B8C7C12051819300481484 /* 10_readline */,
 				607E214120445F9A008F5E3A /* client.c */,
 				607E213A20445F47008F5E3A /* main.c */,
@@ -80,6 +83,15 @@
 				60B8C7C62051871F00481484 /* getip.c */,
 			);
 			path = 10_readline;
+			sourceTree = "<group>";
+		};
+		60B8C7C820519C6A00481484 /* 11_signal */ = {
+			isa = PBXGroup;
+			children = (
+				60B8C7CA20519CA500481484 /* client11.c */,
+				60B8C7C920519CA500481484 /* server11.c */,
+			);
+			path = 11_signal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60B8C7C72051871F00481484 /* getip.c in Sources */,
+				607202612052F34300F6861F /* server11.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
