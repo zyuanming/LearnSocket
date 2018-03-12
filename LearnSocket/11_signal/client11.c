@@ -144,7 +144,7 @@ void echo_cli(int sock) {
         fputs(recvbuf, stdout);
         printf("reset....");
         memset(sendbuf, 0, sizeof(sendbuf));
-        memset(sendbuf, 0, sizeof(recvbuf));
+        memset(recvbuf, 0, sizeof(recvbuf));
     }
     close(sock);
 }

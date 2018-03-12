@@ -101,7 +101,10 @@ ssize_t writen(int fd, const void *buf, size_t count)
     return count;
 }
 
-// 为了解决粘包问题
+// 为了解决粘包问题:
+// 1、定长读取和发送数据
+// 2、以 长度+数据 的格式来发送和读取数据
+// 3、以 换行符\n 为间隔来读取和发送数据
 ssize_t readn(int fd, const void *buf, size_t count)
 {
     size_t nleft = count;
@@ -170,7 +173,7 @@ void client() {
         fputs(recvbuf, stdout);
         printf("reset....");
         memset(sendbuf, 0, sizeof(sendbuf));
-        memset(sendbuf, 0, sizeof(recvbuf));
+        memset(recvbuf, 0, sizeof(recvbuf));
     }
     close(sock);
 

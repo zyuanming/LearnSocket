@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/_select.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <netinet/in.h>
@@ -127,33 +128,63 @@ ssize_t readline(int sockfd, void *buf, size_t maxline)
 }
 
 
+
+/**
+ 用Select 来管理多个I/O
+ 一旦其中的一个或多个I/O检测到我们感兴趣的事件,
+ select函数返回检测到的事件个数.
+ 并且返回哪些I/O发生了事件
+ 遍历这些事件进而处理事件
+ */
 void echo_cli(int sock) {
+    fd_set rset;
+    FD_ZERO(&rset);
+    int nready;
+    int maxfd;
+    // 获取标准输入的文件描述符可以使用宏定义
+    // STDIN_FILENO
+    // 表示0,但是有可能这个标准输入做了重定向,那么就不一定是0了
+    // 所以下面使用函数获取了一下
+    int fd_stdin = fileno(stdin);
+    if (fd_stdin > sock) {
+        maxfd = fd_stdin;
+    } else {
+        maxfd = sock;
+    }
     char sendbuf[1024] = {0};
     char recvbuf[1024] = {0};
 
-
-    while (fgets(sendbuf, sizeof(sendbuf), stdin) != NULL) {
-
-
-        // writen(sock, sendbuf, strlen(sendbuf));
-
-        // 模拟发生 SIG_PIPE 信号,就是客户端在收到Fin信号后,连续两次发送数据
-        writen(sock, sendbuf, 1);
-        writen(sock, sendbuf + 1, strlen(sendbuf) - 1);
-
-        int ret = readline(sock, recvbuf, sizeof(recvbuf));
-        if (ret == -1) {
-            ERR_EXIT("readline");
-        } else if (ret == 0) {
-            printf("client close\n");
-            break;
+    while (1) {
+        FD_SET(fd_stdin, &rset);
+        FD_SET(sock, &rset);
+        nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
+        if (nready == -1) {
+            ERR_EXIT("select");
+        } else if (nready == 0) {
+            continue;
         }
 
-        fputs(recvbuf, stdout);
-        printf("reset....");
-        memset(sendbuf, 0, sizeof(sendbuf));
-        memset(recvbuf, 0, sizeof(recvbuf));
+        if (FD_ISSET(sock, &rset)) {
+            int ret = readline(sock, recvbuf, sizeof(recvbuf));
+            if (ret == -1) {
+                ERR_EXIT("readline");
+            } else if (ret == 0) {
+                printf("client close\n");
+                break;
+            }
+            fputs(recvbuf, stdout);
+            memset(recvbuf, 0, sizeof(recvbuf));
+        }
+
+        if (FD_ISSET(fd_stdin, &rset)) {
+            if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL) {
+                break;
+            }
+            writen(sock, sendbuf, strlen(sendbuf));
+            memset(sendbuf, 0, sizeof(sendbuf));
+        }
     }
+
     close(sock);
 }
 

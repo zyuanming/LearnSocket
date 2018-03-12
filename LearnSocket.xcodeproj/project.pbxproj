@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		607202612052F34300F6861F /* server11.c in Sources */ = {isa = PBXBuildFile; fileRef = 60B8C7C920519CA500481484 /* server11.c */; };
-		6098A46520541C8000166D72 /* server12.c in Sources */ = {isa = PBXBuildFile; fileRef = 6098A46320541C8000166D72 /* server12.c */; };
-		6098A46620541C8000166D72 /* client12.c in Sources */ = {isa = PBXBuildFile; fileRef = 6098A46420541C8000166D72 /* client12.c */; };
+		6080961E2056BDF400773CEE /* server13.c in Sources */ = {isa = PBXBuildFile; fileRef = 603C6C2220554D9C0051F7F0 /* server13.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		603C6C2220554D9C0051F7F0 /* server13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server13.c; sourceTree = "<group>"; };
+		603C6C2320554D9C0051F7F0 /* client13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client13.c; sourceTree = "<group>"; };
 		607E213720445F47008F5E3A /* LearnSocket */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LearnSocket; sourceTree = BUILT_PRODUCTS_DIR; };
 		607E213A20445F47008F5E3A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		607E214120445F9A008F5E3A /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
@@ -50,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		603C6C2120554D680051F7F0 /* 13_select */ = {
+			isa = PBXGroup;
+			children = (
+				603C6C2320554D9C0051F7F0 /* client13.c */,
+				603C6C2220554D9C0051F7F0 /* server13.c */,
+			);
+			path = 13_select;
+			sourceTree = "<group>";
+		};
 		607E212E20445F47008F5E3A = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +78,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				603C6C2120554D680051F7F0 /* 13_select */,
 				6098A46220541C4100166D72 /* 12_signal */,
 				60B8C7C820519C6A00481484 /* 11_signal */,
 				60B8C7C12051819300481484 /* 10_readline */,
@@ -165,9 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607202612052F34300F6861F /* server11.c in Sources */,
-				6098A46620541C8000166D72 /* client12.c in Sources */,
-				6098A46520541C8000166D72 /* server12.c in Sources */,
+				6080961E2056BDF400773CEE /* server13.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
