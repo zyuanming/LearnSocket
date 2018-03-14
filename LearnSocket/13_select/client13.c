@@ -169,7 +169,7 @@ void echo_cli(int sock) {
             if (ret == -1) {
                 ERR_EXIT("readline");
             } else if (ret == 0) {
-                printf("client close\n");
+                printf("server close\n");
                 break;
             }
             fputs(recvbuf, stdout);
@@ -178,13 +178,16 @@ void echo_cli(int sock) {
 
         if (FD_ISSET(fd_stdin, &rset)) {
             if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL) {
-                break;
+                // 关闭本地的写,还是可以读
+                shutdown(sock, SHUT_WR);
+            } else {
+                writen(sock, sendbuf, strlen(sendbuf));
+                memset(sendbuf, 0, sizeof(sendbuf));
             }
-            writen(sock, sendbuf, strlen(sendbuf));
-            memset(sendbuf, 0, sizeof(sendbuf));
         }
     }
 
+    // 关闭了数据传送的两个方向
     close(sock);
 }
 

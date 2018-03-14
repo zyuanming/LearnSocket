@@ -276,6 +276,7 @@ int main(int argc, const char * argv[]) {
                     printf("client close\n");
                     FD_CLR(conn, &allset);
                     client[i] = -1;
+                    close(conn);
                     continue;
                 }
 
