@@ -31,7 +31,7 @@ int main(void)
 
     struct sockaddr_in localaddr;
     socklen_t addrlen = sizeof(localaddr);
-    if (getsockname(sock, (struct sockaddr*)&localaddr, addrlen) < 0) {
+    if (getsockname(sock, (struct sockaddr*)&localaddr, &addrlen) < 0) {
         ERR_EXIT("getsockname");
     }
 
