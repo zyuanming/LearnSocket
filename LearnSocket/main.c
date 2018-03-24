@@ -32,28 +32,7 @@ struct packet
     char buf[1024];
 };
 
-//ssize_t writen(int fd, const void *buf, size_t count)
-//{
-//    size_t nleft = count;
-//    ssize_t nwriten;
-//    char *bufp = (char *)buf;
-//
-//    while (nleft > 0) {
-//        if ((nwriten = write(fd, bufp, nleft)) < 0) {
-//            if (errno == EINTR) {
-//                continue;
-//            } else if (nwriten == 0) {
-//                continue;
-//            }
-//        }
-//        bufp += nwriten;
-//        nleft -= nwriten;
-//    }
-//
-//    return count;
-//}
-//
-//
+
 ssize_t readn(int fd, const void *buf, size_t count)
 {
     size_t nleft = count;

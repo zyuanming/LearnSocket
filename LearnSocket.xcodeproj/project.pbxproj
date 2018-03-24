@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		608550CF205CB24000DE68AD /* srv17.c in Sources */ = {isa = PBXBuildFile; fileRef = 608550CB205CAD0B00DE68AD /* srv17.c */; };
+		60CE96F1206381380001A53A /* echosrv.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F0206381380001A53A /* echosrv.c */; };
+		60CE96F42063845E0001A53A /* echocli.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F32063845E0001A53A /* echocli.c */; };
+		60CE96FA2063A8DB0001A53A /* send_fd.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F82063A69B0001A53A /* send_fd.c */; };
+		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,7 +33,7 @@
 		607E213A20445F47008F5E3A /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		607E214120445F9A008F5E3A /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client.c; sourceTree = "<group>"; };
 		608550C8205CA92700DE68AD /* changeselectlimit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = changeselectlimit.c; sourceTree = "<group>"; };
-		608550CA205CAD0B00DE68AD /* cli17.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cli17.c; sourceTree = "<group>"; };
+		608550CA205CAD0B00DE68AD /* conn_test_client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = conn_test_client.c; sourceTree = "<group>"; };
 		608550CB205CAD0B00DE68AD /* srv17.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = srv17.c; sourceTree = "<group>"; };
 		6098A46320541C8000166D72 /* server12.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server12.c; sourceTree = "<group>"; };
 		6098A46420541C8000166D72 /* client12.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client12.c; sourceTree = "<group>"; };
@@ -41,9 +44,17 @@
 		60B8C7C62051871F00481484 /* getip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = getip.c; sourceTree = "<group>"; };
 		60B8C7C920519CA500481484 /* server11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server11.c; sourceTree = "<group>"; };
 		60B8C7CA20519CA500481484 /* client11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client11.c; sourceTree = "<group>"; };
+		60CE96F0206381380001A53A /* echosrv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echosrv.c; sourceTree = "<group>"; };
+		60CE96F32063845E0001A53A /* echocli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echocli.c; sourceTree = "<group>"; };
+		60CE96F620638B150001A53A /* socket_pair.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = socket_pair.c; sourceTree = "<group>"; };
+		60CE96F82063A69B0001A53A /* send_fd.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = send_fd.c; sourceTree = "<group>"; };
 		60DE6F9320590E090012BDEF /* sysutil.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sysutil.c; sourceTree = "<group>"; };
 		60DE6F95205913950012BDEF /* sysutil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sysutil.h; sourceTree = "<group>"; };
 		60DE6F9620591B4D0012BDEF /* srv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = srv.c; sourceTree = "<group>"; };
+		60EC94272060F84700386EEC /* epollsrv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = epollsrv.cpp; sourceTree = "<group>"; };
+		60EC942C206107BD00386EEC /* echosrv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echosrv.c; sourceTree = "<group>"; };
+		60EC942E20610B5800386EEC /* echocli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echocli.c; sourceTree = "<group>"; };
+		60EC943020610E8300386EEC /* trunc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = trunc.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +96,10 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				60CE96F520638AD70001A53A /* 22_sock_pair */,
+				60CE96EF206380F00001A53A /* 21_unix_socket */,
+				60EC942B2061079000386EEC /* 19_upd */,
+				60EC94262060F81400386EEC /* 18_epoll */,
 				608550C7205CA88C00DE68AD /* 17_poll */,
 				60DE6F9220590D2B0012BDEF /* 16_timeout */,
 				603C6C2120554D680051F7F0 /* 13_select */,
@@ -102,7 +117,7 @@
 		608550C7205CA88C00DE68AD /* 17_poll */ = {
 			isa = PBXGroup;
 			children = (
-				608550CA205CAD0B00DE68AD /* cli17.c */,
+				608550CA205CAD0B00DE68AD /* conn_test_client.c */,
 				608550CB205CAD0B00DE68AD /* srv17.c */,
 				608550C8205CA92700DE68AD /* changeselectlimit.c */,
 			);
@@ -137,6 +152,24 @@
 			path = 11_signal;
 			sourceTree = "<group>";
 		};
+		60CE96EF206380F00001A53A /* 21_unix_socket */ = {
+			isa = PBXGroup;
+			children = (
+				60CE96F0206381380001A53A /* echosrv.c */,
+				60CE96F32063845E0001A53A /* echocli.c */,
+			);
+			path = 21_unix_socket;
+			sourceTree = "<group>";
+		};
+		60CE96F520638AD70001A53A /* 22_sock_pair */ = {
+			isa = PBXGroup;
+			children = (
+				60CE96F620638B150001A53A /* socket_pair.c */,
+				60CE96F82063A69B0001A53A /* send_fd.c */,
+			);
+			path = 22_sock_pair;
+			sourceTree = "<group>";
+		};
 		60DE6F9220590D2B0012BDEF /* 16_timeout */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +179,24 @@
 				6032FE2320591E120001F0AD /* cli.c */,
 			);
 			path = 16_timeout;
+			sourceTree = "<group>";
+		};
+		60EC94262060F81400386EEC /* 18_epoll */ = {
+			isa = PBXGroup;
+			children = (
+				60EC94272060F84700386EEC /* epollsrv.cpp */,
+			);
+			path = 18_epoll;
+			sourceTree = "<group>";
+		};
+		60EC942B2061079000386EEC /* 19_upd */ = {
+			isa = PBXGroup;
+			children = (
+				60EC942C206107BD00386EEC /* echosrv.c */,
+				60EC942E20610B5800386EEC /* echocli.c */,
+				60EC943020610E8300386EEC /* trunc.c */,
+			);
+			path = 19_upd;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,7 +256,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				608550CF205CB24000DE68AD /* srv17.c in Sources */,
+				60CE96F1206381380001A53A /* echosrv.c in Sources */,
+				60CE96FA2063A8DB0001A53A /* send_fd.c in Sources */,
+				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
+				60CE96F42063845E0001A53A /* echocli.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

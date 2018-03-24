@@ -1,44 +1,34 @@
 //
-//  server10.c
+//  epollsrv.c
 //  LearnSocket
 //
-//  Created by Zhang Yuanming on 3/8/18.
+//  Created by Zhang Yuanming on 3/20/18.
 //  Copyright © 2018 HansonStudio. All rights reserved.
 //
 
-#include <stdio.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <netinet/in.h>
 #include <unistd.h>
-#include <string.h>
-#include <netdb.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <signal.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 
-#define ERR_EXIT(m) \
-do \
-{ \
-perror(m); \
-exit(EXIT_FAILURE); \
-} while(0)
+/// !!!!! ERROR  Mac 不支持 epoll
+#include <sys/epoll.h>
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
+#include <vector>
+#include <algorithm>
 
+#include "sysutil.h"
 
-ssize_t recv_peak(int sockfd, void *buf, size_t len)
-{
-    while (1) {
-        int ret = recv(sockfd, buf, len, MSG_PEEK);
-        if (ret == -1 && errno == EINTR) {
-            continue;
-        }
-        return ret;
-    }
-}
-
+typedef std::vector<struct epoll_event> EventList;
 
 // 为了解决粘包问题
 ssize_t readn(int fd, const void *buf, size_t count)
@@ -52,7 +42,7 @@ ssize_t readn(int fd, const void *buf, size_t count)
             if (errno == EINTR) {
                 continue;
             } else if (nreadn == 0) {
-                continue;
+                return count - nleft;
             } else {
                 return -1;
             }
@@ -64,6 +54,9 @@ ssize_t readn(int fd, const void *buf, size_t count)
 
     return count;
 }
+
+
+
 
 // 为了解决粘包问题
 ssize_t writen(int fd, const void *buf, size_t count)
@@ -89,12 +82,24 @@ ssize_t writen(int fd, const void *buf, size_t count)
     return count;
 }
 
+
+ssize_t recv_peak(int sockfd, void *buf, size_t len)
+{
+    while (1) {
+        int ret = recv(sockfd, buf, len, MSG_PEEK);
+        if (ret == -1 && errno == EINTR) {
+            continue;
+        }
+        return ret;
+    }
+}
+
 // 读取一行数据为一条信息,解决粘包问题的一个方法
 ssize_t readline(int sockfd, void *buf, size_t maxline)
 {
     int ret;
     int nread;
-    char *bufp = buf;
+    char *bufp = (char *)buf;
     int nleft = maxline;
     while (1) {
         ret = recv_peak(sockfd, bufp, nleft);
@@ -135,40 +140,23 @@ ssize_t readline(int sockfd, void *buf, size_t maxline)
 void handle_sigchld(int sig)
 {
     // 捕获子进程的状态
-//    wait(NULL);
+    //    wait(NULL);
 
     // 解决同时多个子进程退出时,丢失信号导致存在僵尸进程
     while (waitpid(-1, NULL, WNOHANG) > 0) ;
 }
 
 
-// gcc -Wall -g main.c -o main
-// 观察TCP端口状态:
-// netstat -an | grep tcp | grep 5188
-int main(int argc, const char * argv[]) {
-
-    unsigned int x = 0x12345678;
-    unsigned char *p = (unsigned char *)&x;
-    printf("%x %x %x %x\n", p[0], p[1], p[2], p[3]);
-
-    unsigned int y = htonl(x);
-    p = (unsigned char *)&y;
-    printf("%x %x %x %x\n", p[0], p[1], p[2], p[3]);
-
-    in_addr_t addr = inet_addr("192.168.0.100");
-    printf("addr=%d\n", ntohl(addr));
-
-    struct in_addr ipaddr;
-    ipaddr.s_addr = addr;
-    printf("%s\n", inet_ntoa(ipaddr));
+void handle_sigpipe(int sig) {
+    printf("recv a sig=%d\n", sig);
+}
 
 
-//    // 1、 忽略这个信号,避免僵尸进程
-//    signal(SIGCHLD, SIG_IGN);
-
-    // 2、
+int main(void)
+{
+    int count = 0;
+    signal(SIGPIPE, handle_sigpipe);
     signal(SIGCHLD, handle_sigchld);
-
 
     int listenfd;
     if ((listenfd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
@@ -180,8 +168,6 @@ int main(int argc, const char * argv[]) {
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(5188);
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    inet_aton("127.0.0.1", &servaddr.sin_addr);
 
     int on = 1;
     if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
@@ -196,104 +182,84 @@ int main(int argc, const char * argv[]) {
         ERR_EXIT("listen");
     }
 
+    std::vector<int> clients;
+    int epollfd;
+    epollfd = epoll_create1(EPOLL_CLOEXEC);
+
+    struct epoll_event event;
+    event.data.fd = listenfd;
+    event.events = EPOLLIN | EPOLLET;
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, listenfd, &event);
+
+    EventList events(16);
     struct sockaddr_in peeraddr;
-    socklen_t peerlen = sizeof(peeraddr);
+    socklen_t peerlen;
     int conn;
-
     int i;
-    int client[FD_SETSIZE];
-    int maxi = 0;
-
-    for (i = 0; i < FD_SETSIZE; i++) {
-        client[i] = -1;
-    }
 
     int nready;
-    int maxfd = listenfd;
-    fd_set rset;
-    fd_set allset;
-    FD_ZERO(&rset);
-    FD_ZERO(&allset);
-    FD_SET(listenfd, &allset);
     while (1) {
-        rset = allset;
-        nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
+        nready = epoll_wait(epollfd, &*events.begin(), static_cast<int>(events.size()), -1);
         if (nready == -1) {
             if (errno == EINTR) {
-                continue;
+                conntinue;
             }
-            ERR_EXIT("select");
+            ERR_EXIT("epoll_wait");
         }
-
         if (nready == 0) {
-            continue;
+            conntinue;
         }
 
-        if (FD_ISSET(listenfd, &rset)) {
-            peerlen = sizeof(peeraddr);
-            conn = accept(listenfd, (struct sockaddr *)&peeraddr, &peerlen);
+        if ((size_t)nready == events.size()) {
+            events.resize(events.size()*2);
+        }
 
-            if (conn == -1) {
-                ERR_EXIT("accept");
-            }
-
-            for (i = 0; i < FD_SETSIZE; i++) {
-                if (client[i] < 0) {
-                    client[i] = conn;
-                    if (i > maxi) {
-                        maxi = i;
-                    }
-                    break;
+        for (i = 0; i < nready; i++) {
+            if (events[i].data.fd == listenfd) {
+                peerlen = sizeof(peeraddr);
+                conn = accept(listenfd, (struct sockaddr*)&peeraddr, &peerlen);
+                if (conn == -1) {
+                    ERR_EXIT("accept");
                 }
-            }
 
-            if (i == FD_SETSIZE) {
-                fprintf(stderr, "too many clients\n");
-                exit(EXIT_FAILURE);
-            }
-            printf("ip=%s port=%d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
+                printf("ip=%s port=%d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
+                printf("count = %d\n", ++count);
+                clients.push_back(conn);
 
-            FD_SET(conn, &allset);
+                active_nonblock(conn);
 
-            if (conn > maxfd) {
-                maxfd = conn;
-            }
-
-            if (--nready <= 0) {
-                continue;
-            }
-        }
-
-        for (i = 0; i < maxi; i++) {
-            conn = client[i];
-            if (conn == -1) {
-                continue;
-            }
-            if (FD_ISSET(conn, &rset)) {
-                char recvbuf[1024] = {0};
-                int ret = readline(conn, recvbuf, sizeof(recvbuf));
-                if (ret == -1) {
-                    ERR_EXIT("readline");
-                } else if (ret == 0) {
-                    printf("client close\n");
-                    FD_CLR(conn, &allset);
-                    client[i] = -1;
-                    close(conn);
+                event.data.fd = conn;
+                event.events = EPOLLIN | EPOLLET;
+                epoll_ctl(epollfd, EPOLL_CTL_ADD, conn, &event);
+            } else if (events[i].events & EPOLLIN) {
+                conn = events[i].data.fd;
+                if (conn < 0) {
                     continue;
                 }
+                char recvbuf[1024] = {0};
+                int ret = readline(conn, recvbuf, 1024);
+                if (ret == -1) {
+                    ERR_EXIT("readline");
+                }
+                if (ret == 0) {
+                    printf("client close\n");
+                    close(conn);
 
+                    event = events[i];
+                    epoll_ctl(epollfd, EPOLL_CTL_DEL, conn, &event);
+                    clients.erase(std::remove(clients.begin(), clients.end(), conn), clients.end());
+                }
                 fputs(recvbuf, stdout);
                 writen(conn, recvbuf, strlen(recvbuf));
-
-                if (--nready <= 0) {
-                    break;
-                }
             }
         }
     }
-
-    return 0;
 }
+
+
+
+
+
 
 
 

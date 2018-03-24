@@ -46,9 +46,11 @@ ssize_t writen(int fd, const void *buf, size_t count)
         if ((nwriten = write(fd, bufp, nleft)) < 0) {
             if (errno == EINTR) {
                 continue;
-            } else if (nwriten == 0) {
-                continue;
+            } else {
+                return -1;
             }
+        } else if (nwriten == 0) {
+            continue;
         }
         bufp += nwriten;
         nleft -= nwriten;
