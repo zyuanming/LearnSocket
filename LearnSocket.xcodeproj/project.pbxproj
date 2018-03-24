@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		60CE96F1206381380001A53A /* echosrv.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F0206381380001A53A /* echosrv.c */; };
-		60CE96F42063845E0001A53A /* echocli.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F32063845E0001A53A /* echocli.c */; };
-		60CE96FA2063A8DB0001A53A /* send_fd.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CE96F82063A69B0001A53A /* send_fd.c */; };
+		603AA8EB20664EA5001776B9 /* msg_stat.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA8EA20664EA5001776B9 /* msg_stat.c */; };
+		603AA8ED20665193001776B9 /* msg_set.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA8EC20665193001776B9 /* msg_set.c */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +26,10 @@
 
 /* Begin PBXFileReference section */
 		6032FE2320591E120001F0AD /* cli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cli.c; sourceTree = "<group>"; };
+		603AA8E6206648FD001776B9 /* msg_get.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = msg_get.c; sourceTree = "<group>"; };
+		603AA8E820664DDD001776B9 /* msg_rmid.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = msg_rmid.c; sourceTree = "<group>"; };
+		603AA8EA20664EA5001776B9 /* msg_stat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = msg_stat.c; sourceTree = "<group>"; };
+		603AA8EC20665193001776B9 /* msg_set.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = msg_set.c; sourceTree = "<group>"; };
 		603C6C2220554D9C0051F7F0 /* server13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server13.c; sourceTree = "<group>"; };
 		603C6C2320554D9C0051F7F0 /* client13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client13.c; sourceTree = "<group>"; };
 		607E213720445F47008F5E3A /* LearnSocket */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LearnSocket; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +71,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		603AA8E5206648B4001776B9 /* 25_msgqueue */ = {
+			isa = PBXGroup;
+			children = (
+				603AA8E6206648FD001776B9 /* msg_get.c */,
+				603AA8E820664DDD001776B9 /* msg_rmid.c */,
+				603AA8EA20664EA5001776B9 /* msg_stat.c */,
+				603AA8EC20665193001776B9 /* msg_set.c */,
+			);
+			path = 25_msgqueue;
+			sourceTree = "<group>";
+		};
 		603C6C2120554D680051F7F0 /* 13_select */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +110,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				603AA8E5206648B4001776B9 /* 25_msgqueue */,
 				60CE96F520638AD70001A53A /* 22_sock_pair */,
 				60CE96EF206380F00001A53A /* 21_unix_socket */,
 				60EC942B2061079000386EEC /* 19_upd */,
@@ -256,10 +271,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60CE96F1206381380001A53A /* echosrv.c in Sources */,
-				60CE96FA2063A8DB0001A53A /* send_fd.c in Sources */,
+				603AA8EB20664EA5001776B9 /* msg_stat.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
-				60CE96F42063845E0001A53A /* echocli.c in Sources */,
+				603AA8ED20665193001776B9 /* msg_set.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
