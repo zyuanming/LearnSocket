@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		603AA8FA2067700A001776B9 /* mmap_write.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA8F92067700A001776B9 /* mmap_write.c */; };
-		603AA8FC20677546001776B9 /* mmap_read.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA8FB20677546001776B9 /* mmap_read.c */; };
+		603AA8FF2067ACD0001776B9 /* shmwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA8FE2067ACD0001776B9 /* shmwrite.c */; };
+		603AA9012067AE6A001776B9 /* shmread.c in Sources */ = {isa = PBXBuildFile; fileRef = 603AA9002067AE6A001776B9 /* shmread.c */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +36,8 @@
 		603AA8F620669590001776B9 /* echocli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echocli.c; sourceTree = "<group>"; };
 		603AA8F92067700A001776B9 /* mmap_write.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mmap_write.c; sourceTree = "<group>"; };
 		603AA8FB20677546001776B9 /* mmap_read.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mmap_read.c; sourceTree = "<group>"; };
+		603AA8FE2067ACD0001776B9 /* shmwrite.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shmwrite.c; sourceTree = "<group>"; };
+		603AA9002067AE6A001776B9 /* shmread.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shmread.c; sourceTree = "<group>"; };
 		603C6C2220554D9C0051F7F0 /* server13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server13.c; sourceTree = "<group>"; };
 		603C6C2320554D9C0051F7F0 /* client13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client13.c; sourceTree = "<group>"; };
 		607E213720445F47008F5E3A /* LearnSocket */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LearnSocket; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +110,15 @@
 			path = 28_share_memory;
 			sourceTree = "<group>";
 		};
+		603AA8FD2067ACB2001776B9 /* 29_share_memory */ = {
+			isa = PBXGroup;
+			children = (
+				603AA8FE2067ACD0001776B9 /* shmwrite.c */,
+				603AA9002067AE6A001776B9 /* shmread.c */,
+			);
+			path = 29_share_memory;
+			sourceTree = "<group>";
+		};
 		603C6C2120554D680051F7F0 /* 13_select */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +147,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				603AA8FD2067ACB2001776B9 /* 29_share_memory */,
 				603AA8F820676F89001776B9 /* 28_share_memory */,
 				603AA8F320669504001776B9 /* 27_msgqueu_echo */,
 				603AA8E5206648B4001776B9 /* 25_msgqueue */,
@@ -299,9 +311,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				603AA8FC20677546001776B9 /* mmap_read.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
-				603AA8FA2067700A001776B9 /* mmap_write.c in Sources */,
+				603AA9012067AE6A001776B9 /* shmread.c in Sources */,
+				603AA8FF2067ACD0001776B9 /* shmwrite.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
