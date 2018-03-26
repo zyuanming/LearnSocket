@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		608E00402068CE2100EDC21E /* sem.c in Sources */ = {isa = PBXBuildFile; fileRef = 608E003F2068CE2100EDC21E /* sem.c */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
+		60F218E82069405E00E12ECE /* sem.c in Sources */ = {isa = PBXBuildFile; fileRef = 60F218E72069405E00E12ECE /* sem.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -68,6 +68,7 @@
 		60EC942C206107BD00386EEC /* echosrv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echosrv.c; sourceTree = "<group>"; };
 		60EC942E20610B5800386EEC /* echocli.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echocli.c; sourceTree = "<group>"; };
 		60EC943020610E8300386EEC /* trunc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = trunc.c; sourceTree = "<group>"; };
+		60F218E72069405E00E12ECE /* sem.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sem.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +150,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				60F218E62069404100E12ECE /* 32_signal_philosopher */,
 				608E003E2068CE0D00EDC21E /* 31_signal */,
 				60D7890E2068901700D9746D /* 30_signal */,
 				603AA8FD2067ACB2001776B9 /* 29_share_memory */,
@@ -275,6 +277,14 @@
 			path = 19_upd;
 			sourceTree = "<group>";
 		};
+		60F218E62069404100E12ECE /* 32_signal_philosopher */ = {
+			isa = PBXGroup;
+			children = (
+				60F218E72069405E00E12ECE /* sem.c */,
+			);
+			path = 32_signal_philosopher;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -332,7 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				608E00402068CE2100EDC21E /* sem.c in Sources */,
+				60F218E82069405E00E12ECE /* sem.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
