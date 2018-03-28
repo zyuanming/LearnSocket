@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		60CB7823206BAC1B00FF9EB5 /* tsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 60CB7822206BAC1B00FF9EB5 /* tsd.c */; };
+		60C8477A206BE6B1007619F6 /* posix_signal.c in Sources */ = {isa = PBXBuildFile; fileRef = 60C84779206BE6B1007619F6 /* posix_signal.c */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +56,7 @@
 		60B8C7C62051871F00481484 /* getip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = getip.c; sourceTree = "<group>"; };
 		60B8C7C920519CA500481484 /* server11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server11.c; sourceTree = "<group>"; };
 		60B8C7CA20519CA500481484 /* client11.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client11.c; sourceTree = "<group>"; };
+		60C84779206BE6B1007619F6 /* posix_signal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = posix_signal.c; sourceTree = "<group>"; };
 		60CB781B206B42B200FF9EB5 /* pthread1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pthread1.c; sourceTree = "<group>"; };
 		60CB781D206B44F700FF9EB5 /* echosrv.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = echosrv.c; sourceTree = "<group>"; };
 		60CB7820206BA3D300FF9EB5 /* threadattr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = threadattr.c; sourceTree = "<group>"; };
@@ -155,6 +156,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				60C84778206BE68D007619F6 /* 39_posix_signal */,
 				60CB781F206BA3AD00FF9EB5 /* 38_posix_thread */,
 				60CB781A206B428000FF9EB5 /* 37_posix_thread */,
 				60A79525206A549000B35F0E /* 35_posix_share_memory */,
@@ -235,6 +237,14 @@
 				60B8C7C920519CA500481484 /* server11.c */,
 			);
 			path = 11_signal;
+			sourceTree = "<group>";
+		};
+		60C84778206BE68D007619F6 /* 39_posix_signal */ = {
+			isa = PBXGroup;
+			children = (
+				60C84779206BE6B1007619F6 /* posix_signal.c */,
+			);
+			path = 39_posix_signal;
 			sourceTree = "<group>";
 		};
 		60CB781A206B428000FF9EB5 /* 37_posix_thread */ = {
@@ -376,8 +386,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60CB7823206BAC1B00FF9EB5 /* tsd.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
+				60C8477A206BE6B1007619F6 /* posix_signal.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
