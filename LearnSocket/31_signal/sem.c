@@ -48,7 +48,7 @@ int sem_open1(key_t key)
         ERR_EXIT("semget");
     }
 
-    return 0;
+    return semid;
 }
 
 int sem_setval(int semid, int val)
