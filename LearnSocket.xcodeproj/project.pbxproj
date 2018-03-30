@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		606C232C206CC5F200C62239 /* shmfifo.c in Sources */ = {isa = PBXBuildFile; fileRef = 606C232B206CC5F200C62239 /* shmfifo.c */; };
-		606C2336206CD64F00C62239 /* shmfifo_recv.c in Sources */ = {isa = PBXBuildFile; fileRef = 606C2332206CD01100C62239 /* shmfifo_recv.c */; };
-		606C2337206CD68500C62239 /* ipc.c in Sources */ = {isa = PBXBuildFile; fileRef = 606C232E206CCA4C00C62239 /* ipc.c */; };
+		608071E8206E33B0005A3982 /* chatsrv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 603BBD82206CEB5900924928 /* chatsrv.cpp */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +37,9 @@
 		603AA8FB20677546001776B9 /* mmap_read.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mmap_read.c; sourceTree = "<group>"; };
 		603AA8FE2067ACD0001776B9 /* shmwrite.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shmwrite.c; sourceTree = "<group>"; };
 		603AA9002067AE6A001776B9 /* shmread.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shmread.c; sourceTree = "<group>"; };
+		603BBD7F206CE84900924928 /* chatcli.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = chatcli.cpp; sourceTree = "<group>"; };
+		603BBD81206CE8A700924928 /* pub.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = pub.h; sourceTree = "<group>"; };
+		603BBD82206CEB5900924928 /* chatsrv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = chatsrv.cpp; sourceTree = "<group>"; };
 		603C6C2220554D9C0051F7F0 /* server13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server13.c; sourceTree = "<group>"; };
 		603C6C2320554D9C0051F7F0 /* client13.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client13.c; sourceTree = "<group>"; };
 		606C2327206C94ED00C62239 /* ptest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ptest.c; sourceTree = "<group>"; };
@@ -169,6 +170,16 @@
 			path = 33_sharem_signal;
 			sourceTree = "<group>";
 		};
+		606C2338206CDE8D00C62239 /* 20_upd_chat */ = {
+			isa = PBXGroup;
+			children = (
+				603BBD7F206CE84900924928 /* chatcli.cpp */,
+				603BBD82206CEB5900924928 /* chatsrv.cpp */,
+				603BBD81206CE8A700924928 /* pub.h */,
+			);
+			path = 20_upd_chat;
+			sourceTree = "<group>";
+		};
 		607E212E20445F47008F5E3A = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +213,7 @@
 				603AA8F320669504001776B9 /* 27_msgqueu_echo */,
 				603AA8E5206648B4001776B9 /* 25_msgqueue */,
 				60CE96F520638AD70001A53A /* 22_sock_pair */,
+				606C2338206CDE8D00C62239 /* 20_upd_chat */,
 				60CE96EF206380F00001A53A /* 21_unix_socket */,
 				60EC942B2061079000386EEC /* 19_upd */,
 				60EC94262060F81400386EEC /* 18_epoll */,
@@ -420,10 +432,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				606C232C206CC5F200C62239 /* shmfifo.c in Sources */,
-				606C2336206CD64F00C62239 /* shmfifo_recv.c in Sources */,
-				606C2337206CD68500C62239 /* ipc.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
+				608071E8206E33B0005A3982 /* chatsrv.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
