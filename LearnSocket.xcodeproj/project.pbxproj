@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		60C62857206F641F004EC19C /* chatcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 603BBD7F206CE84900924928 /* chatcli.cpp */; };
+		6099861F206FE66F007C06AF /* threadpool.c in Sources */ = {isa = PBXBuildFile; fileRef = 6099861E206FE66F007C06AF /* threadpool.c */; };
+		60998623206FE8CE007C06AF /* condition.c in Sources */ = {isa = PBXBuildFile; fileRef = 60998622206FE8CE007C06AF /* condition.c */; };
+		60998625206FEBF9007C06AF /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 60998624206FEBF9007C06AF /* main.c */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,11 @@
 		608E003F2068CE2100EDC21E /* sem.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sem.c; sourceTree = "<group>"; };
 		6098A46320541C8000166D72 /* server12.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server12.c; sourceTree = "<group>"; };
 		6098A46420541C8000166D72 /* client12.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = client12.c; sourceTree = "<group>"; };
+		6099861D206FE66F007C06AF /* threadpool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = threadpool.h; sourceTree = "<group>"; };
+		6099861E206FE66F007C06AF /* threadpool.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = threadpool.c; sourceTree = "<group>"; };
+		60998621206FE8CE007C06AF /* condition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = condition.h; sourceTree = "<group>"; };
+		60998622206FE8CE007C06AF /* condition.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = condition.c; sourceTree = "<group>"; };
+		60998624206FEBF9007C06AF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		60A79526206A54AD00B35F0E /* shm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shm.c; sourceTree = "<group>"; };
 		60AD5574204BDEA100819092 /* p2pServ.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pServ.c; sourceTree = "<group>"; };
 		60AD5576204BE0B000819092 /* p2pClient.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = p2pClient.c; sourceTree = "<group>"; };
@@ -199,6 +206,7 @@
 		607E213920445F47008F5E3A /* LearnSocket */ = {
 			isa = PBXGroup;
 			children = (
+				6099861C206FE60C007C06AF /* 41_threadpool */,
 				606C2326206C94CF00C62239 /* 40_posix_condition */,
 				60C84778206BE68D007619F6 /* 39_posix_signal */,
 				60CB781F206BA3AD00FF9EB5 /* 38_posix_thread */,
@@ -256,6 +264,18 @@
 				6098A46320541C8000166D72 /* server12.c */,
 			);
 			path = 12_signal;
+			sourceTree = "<group>";
+		};
+		6099861C206FE60C007C06AF /* 41_threadpool */ = {
+			isa = PBXGroup;
+			children = (
+				6099861D206FE66F007C06AF /* threadpool.h */,
+				6099861E206FE66F007C06AF /* threadpool.c */,
+				60998621206FE8CE007C06AF /* condition.h */,
+				60998622206FE8CE007C06AF /* condition.c */,
+				60998624206FEBF9007C06AF /* main.c */,
+			);
+			path = 41_threadpool;
 			sourceTree = "<group>";
 		};
 		60A79525206A549000B35F0E /* 35_posix_share_memory */ = {
@@ -432,8 +452,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60C62857206F641F004EC19C /* chatcli.cpp in Sources */,
+				60998625206FEBF9007C06AF /* main.c in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
+				6099861F206FE66F007C06AF /* threadpool.c in Sources */,
+				60998623206FE8CE007C06AF /* condition.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
