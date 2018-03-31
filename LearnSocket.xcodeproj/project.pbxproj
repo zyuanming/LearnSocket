@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		608071E8206E33B0005A3982 /* chatsrv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 603BBD82206CEB5900924928 /* chatsrv.cpp */; };
+		60C62857206F641F004EC19C /* chatcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 603BBD7F206CE84900924928 /* chatcli.cpp */; };
 		60EC942A2060FB1600386EEC /* sysutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 60DE6F9320590E090012BDEF /* sysutil.c */; };
 /* End PBXBuildFile section */
 
@@ -432,8 +432,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60C62857206F641F004EC19C /* chatcli.cpp in Sources */,
 				60EC942A2060FB1600386EEC /* sysutil.c in Sources */,
-				608071E8206E33B0005A3982 /* chatsrv.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

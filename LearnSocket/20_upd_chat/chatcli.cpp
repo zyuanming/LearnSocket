@@ -17,9 +17,60 @@
 #include <string.h>
 #include <netdb.h>
 #include <sys/wait.h>
-#include "sysutil.h"
 #include <fcntl.h>
-#include "pub.h"
+
+
+
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+// C2S
+#define C2S_LOGIN             0x01
+#define C2S_LOOUT             0x02
+#define C2S_ONLINE_USER       0x03
+
+#define MSG_LEN               512
+
+// S2C
+#define S2C_LOGIN_OK          0x01
+#define S2C_ALREADY_LOGINED   0x02
+#define S2C_SOMEONE_LOGIN     0x03
+#define S2C_SOMEONE_LOGOUT    0x04
+#define S2C_ONLINE_USER       0x05
+
+// C2C
+#define C2C_CHAT              0x06
+
+typedef struct message
+{
+    int cmd;
+    char body[MSG_LEN];
+} MESSAGE;
+
+typedef struct user_info
+{
+    char username[16];
+    unsigned int ip;
+    unsigned short port;
+} USER_INFO;
+
+typedef struct chat_msg
+{
+    char username[16];
+    char msg[100];
+} CHAT_MSG;
+
+typedef list<USER_INFO> USER_LIST;
+
+
+
+
+
+
+
+
 
 
 #define ERR_EXIT(m) \
@@ -62,7 +113,7 @@ void parse_cmd(char *cmdline, int sock, struct sockaddr_in *servaddr)
         msg.cmd = htonl(C2S_LOOUT);
         strcpy(msg.body, username);
 
-        if (sendto(sock, &msg, sizeof(msg), 0, (struct sockaddr *)servaddr, sizeof(servaddr)) == -1) {
+        if (sendto(sock, &msg, sizeof(msg), 0, (struct sockaddr *)servaddr, sizeof(struct sockaddr_in)) == -1) {
             ERR_EXIT("sendto");
         }
 
@@ -82,6 +133,7 @@ void parse_cmd(char *cmdline, int sock, struct sockaddr_in *servaddr)
             printf("list\n");
             printf("exit\n");
             printf("\n");
+            return;
         }
         *p2 = '\0';
         strcpy(peername, p);
@@ -93,7 +145,7 @@ void parse_cmd(char *cmdline, int sock, struct sockaddr_in *servaddr)
         memset(&msg, 0, sizeof(msg));
         msg.cmd = htonl(C2S_ONLINE_USER);
 
-        if (sendto(sock, &msg, sizeof(msg), 0, (struct sockaddr*)servaddr, sizeof(servaddr)) == -1) {
+        if (sendto(sock, &msg, sizeof(msg), 0, (struct sockaddr*)servaddr, sizeof(struct sockaddr_in)) == -1) {
             ERR_EXIT("sendto");
         }
     } else {
@@ -228,7 +280,7 @@ void chat_cli(int sock)
         recvfrom(sock, &msg, sizeof(msg), 0, NULL, NULL);
         int cmd = ntohl(msg.cmd);
         if (cmd == S2C_ALREADY_LOGINED) {
-            printf("user %s already logined server, please use another username", username);
+            printf("user %s already logined server, please use another username\n", username);
         } else if (cmd == S2C_LOGIN_OK) {
             printf("user %s has logined server\n", username);
             break;
@@ -315,6 +367,8 @@ void chat_cli(int sock)
 }
 
 
+
+// g++ -Wall -g chatcli.cpp -o chatcli
 int main(void)
 {
     int sock;

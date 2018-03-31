@@ -17,9 +17,64 @@
 #include <string.h>
 #include <netdb.h>
 #include <sys/wait.h>
-#include "sysutil.h"
 #include <fcntl.h>
-#include "pub.h"
+
+
+
+
+
+
+
+
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+// C2S
+#define C2S_LOGIN             0x01
+#define C2S_LOOUT             0x02
+#define C2S_ONLINE_USER       0x03
+
+#define MSG_LEN               512
+
+// S2C
+#define S2C_LOGIN_OK          0x01
+#define S2C_ALREADY_LOGINED   0x02
+#define S2C_SOMEONE_LOGIN     0x03
+#define S2C_SOMEONE_LOGOUT    0x04
+#define S2C_ONLINE_USER       0x05
+
+// C2C
+#define C2C_CHAT              0x06
+
+typedef struct message
+{
+    int cmd;
+    char body[MSG_LEN];
+} MESSAGE;
+
+typedef struct user_info
+{
+    char username[16];
+    unsigned int ip;
+    unsigned short port;
+} USER_INFO;
+
+typedef struct chat_msg
+{
+    char username[16];
+    char msg[100];
+} CHAT_MSG;
+
+typedef list<USER_INFO> USER_LIST;
+
+
+
+
+
+
+
 
 
 #define ERR_EXIT(m) \
@@ -62,16 +117,16 @@ void do_login(MESSAGE& msg, int sock, struct sockaddr_in *cliaddr)
         MESSAGE reply_msg;
         memset(&reply_msg, 0, sizeof(reply_msg));
         reply_msg.cmd = htonl(S2C_LOGIN_OK);
-        sendto(sock, &reply_msg, sizeof(msg), 0, (struct sockaddr *)cliaddr, sizeof(cliaddr));
+        sendto(sock, &reply_msg, sizeof(msg), 0, (struct sockaddr *)cliaddr, sizeof(struct sockaddr_in));
 
         int count = htonl((int)client_list.size());
         // 发送在线人数
-        sendto(sock, &count, sizeof(int), 0, (struct sockaddr *)cliaddr, sizeof(cliaddr));
+        sendto(sock, &count, sizeof(int), 0, (struct sockaddr *)cliaddr, sizeof(struct sockaddr_in));
 
-        printf("sending user list information to: %s <-> %s:%d\n", msg.body, it->ip, it->port);
+        printf("sending user list information to: %s <-> %s:%d\n", msg.body, inet_ntoa(cliaddr->sin_addr), ntohs(cliaddr->sin_port));
         // 发送在线列表
         for (it = client_list.begin(); it != client_list.end(); ++it) {
-            sendto(sock, &*it, sizeof(USER_INFO), 0, (struct sockaddr *)cliaddr, sizeof(cliaddr));
+            sendto(sock, &*it, sizeof(USER_INFO), 0, (struct sockaddr *)cliaddr, sizeof(struct sockaddr_in));
         }
 
         // 向其它用户通知有新用户登录
@@ -99,14 +154,14 @@ void do_login(MESSAGE& msg, int sock, struct sockaddr_in *cliaddr)
         MESSAGE reply_msg;
         memset(&reply_msg, 0, sizeof(reply_msg));
         reply_msg.cmd = htonl(S2C_ALREADY_LOGINED);
-        sendto(sock, &reply_msg, sizeof(reply_msg), 0, (struct sockaddr *)cliaddr, sizeof(cliaddr));
+        sendto(sock, &reply_msg, sizeof(reply_msg), 0, (struct sockaddr *)cliaddr, sizeof(struct sockaddr_in));
     }
 }
 
 
 void do_logout(MESSAGE& msg, int sock, struct sockaddr_in *cliaddr)
 {
-    printf("has user logout : %s <-> %s:%d\n", msg.body, inet_ntoa(cliaddr->sin_addr), ntohl(cliaddr->sin_port));
+    printf("has user logout : %s <-> %s:%d\n", msg.body, inet_ntoa(cliaddr->sin_addr), ntohs(cliaddr->sin_port));
 
     USER_LIST::iterator it;
     for (it = client_list.begin(); it != client_list.end(); ++it) {
@@ -177,16 +232,16 @@ void do_sendlist(int sock, struct sockaddr_in *cliaddr)
 {
     MESSAGE msg;
     msg.cmd = htonl(S2C_ONLINE_USER);
-    sendto(sock, (const char*)&msg, sizeof(msg), 0, (struct sockaddr*)cliaddr, sizeof(&cliaddr));
+    sendto(sock, (const char*)&msg, sizeof(msg), 0, (struct sockaddr*)cliaddr, sizeof(struct sockaddr_in));
 
     int count = htonl((int)client_list.size());
     // 发送在线用户数
-    sendto(sock, (const char*)&count, sizeof(int), 0, (struct sockaddr*)cliaddr, sizeof(&cliaddr));
+    sendto(sock, (const char*)&count, sizeof(int), 0, (struct sockaddr*)cliaddr, sizeof(struct sockaddr_in));
 
     // 发送在线用户列表
     USER_LIST::iterator it;
     for (it = client_list.begin(); it != client_list.end(); ++it) {
-        sendto(sock, &*it, sizeof(USER_INFO), 0, (struct sockaddr*)cliaddr, sizeof(cliaddr));
+        sendto(sock, &*it, sizeof(USER_INFO), 0, (struct sockaddr*)cliaddr, sizeof(struct sockaddr_in));
     }
 
 }
