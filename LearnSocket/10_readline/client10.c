@@ -36,6 +36,34 @@ ssize_t recv_peak(int sockfd, void *buf, size_t len)
 }
 
 
+// 为了解决粘包问题:
+// 1、定长读取和发送数据
+// 2、以 长度+数据 的格式来发送和读取数据
+// 3、以 换行符\n 为间隔来读取和发送数据
+ssize_t readn(int fd, const void *buf, size_t count)
+{
+    size_t nleft = count;
+    ssize_t nreadn;
+    char *bufp = (char *)buf;
+    
+    while (nleft > 0) {
+        if ((nreadn = read(fd, bufp, nleft)) < 0) {
+            if (errno == EINTR) {
+                continue;
+            } else if (nreadn == 0) {
+                continue;
+            } else {
+                return -1;
+            }
+        }
+        
+        bufp += nreadn;
+        nleft -= nreadn;
+    }
+    
+    return count;
+}
+
 
 // 读取一行数据为一条信息,解决粘包问题的一个方法
 ssize_t readline(int sockfd, void *buf, size_t maxline)
@@ -103,33 +131,7 @@ ssize_t writen(int fd, const void *buf, size_t count)
     return count;
 }
 
-// 为了解决粘包问题:
-// 1、定长读取和发送数据
-// 2、以 长度+数据 的格式来发送和读取数据
-// 3、以 换行符\n 为间隔来读取和发送数据
-ssize_t readn(int fd, const void *buf, size_t count)
-{
-    size_t nleft = count;
-    ssize_t nreadn;
-    char *bufp = (char *)buf;
 
-    while (nleft > 0) {
-        if ((nreadn = read(fd, bufp, nleft)) < 0) {
-            if (errno == EINTR) {
-                continue;
-            } else if (nreadn == 0) {
-                continue;
-            } else {
-                return -1;
-            }
-        }
-
-        bufp += nreadn;
-        nleft -= nreadn;
-    }
-
-    return count;
-}
 
 
 
