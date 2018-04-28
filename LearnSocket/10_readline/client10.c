@@ -73,7 +73,7 @@ ssize_t readline(int sockfd, void *buf, size_t maxline)
     char *bufp = buf;
     int nleft = maxline;
     while (1) {
-        ret = recv_peek(sockfd, bufp, nleft);
+        ret = recv_peak(sockfd, bufp, nleft);
         if (ret < 0) {
             return ret;
         } else if (ret == 0) {
@@ -135,7 +135,7 @@ ssize_t writen(int fd, const void *buf, size_t count)
 
 
 
-void client() {
+int main() {
     int sock;
     if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
         ERR_EXIT("socket");
@@ -145,7 +145,7 @@ void client() {
     memset(&servaddr, 0, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(5188);
-    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    servaddr.sin_addr.s_addr = inet_addr("192.168.0.100");
 
     if (connect(sock, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
         ERR_EXIT("connect");
@@ -181,6 +181,7 @@ void client() {
     }
     close(sock);
 
+    return 0;
 }
 
 
